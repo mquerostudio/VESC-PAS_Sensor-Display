@@ -31,6 +31,8 @@ unsigned long previousMillisValues = 0;
 int count = 0;
 float cadenceRev = 0;
 float cadenceRPM = 0;
+int throttle = 127;
+
 
 void getVESCvalues()
 {
@@ -228,7 +230,7 @@ void printInts(float _variable, byte _define, byte _row)
 int sensorRead()
 {
   byte value;
-  int _throttle = 127;
+  int _throttle;
   unsigned int valueRAW;
   currentMillis = millis();
 
@@ -254,6 +256,8 @@ int sensorRead()
 
     if(count >= 3){
       _throttle = 255;
+    } else{
+      _throttle = 127;
     }
 
     count = 0;
@@ -281,7 +285,7 @@ void setNunchuckValue(int _throttle)
 void loop()
 {
 
-  int throttle = sensorRead();
+  throttle = sensorRead();
 
   if (millis() > (previousMillisValues + intervalValues))
   {

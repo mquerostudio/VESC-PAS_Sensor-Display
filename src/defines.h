@@ -21,7 +21,7 @@
 /** Sensor PAS parameters */
 #define sensorPin A3
 #define cadenceMagnets 12.0
-#define interval 1000 //ms
+#define interval 500 //ms
 #define maxRPM 120
 #define minRPM 0
 #define _Chainring 42
