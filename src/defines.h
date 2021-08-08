@@ -28,7 +28,7 @@
 #define _Cogset 11
 
 /** Interval getvalues */
-#define intervalValues 500
+#define intervalValues 1000
 
 
 

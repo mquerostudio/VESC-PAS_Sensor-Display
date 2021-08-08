@@ -228,7 +228,7 @@ void printInts(float _variable, byte _define, byte _row)
 int sensorRead()
 {
   byte value;
-  int _throttle;
+  int _throttle = 127;
   unsigned int valueRAW;
   currentMillis = millis();
 
@@ -252,22 +252,14 @@ int sensorRead()
   if (currentMillis > (previousMillis + interval))
   {
 
-    cadenceRev = count / cadenceMagnets;
+    if(count >= 3){
+      _throttle = 255;
+    }
 
-    /**
-        * 10 rev -------->  1000 ms (interval) 1 s
-        * x rev  --------> 60000 ms 60 s --> 1 min
-        */
-
-    cadenceRPM = (60000 * cadenceRev) / interval;
     count = 0;
     previousMillis = millis();
   }
 
-  if (cadenceRPM <= maxRPM)
-  {
-    _throttle = map(cadenceRPM, minRPM, maxRPM, 127, 255); //mapping cadence to throttle values.
-  }
   return _throttle;
 }
 
@@ -290,10 +282,10 @@ void loop()
 {
 
   int throttle = sensorRead();
-  getVESCvalues();
 
   if (millis() > (previousMillisValues + intervalValues))
   {
+    getVESCvalues();
     /** Parameters to calculate */
     velocity = rpm * 60 * 2 * 3.142 * (0.66 / 2) * 1E-3; //rpm * 2PI * 60 * wheel radius * 10E-3
     distance = tachometerAbs * 3.142 * 1E-3 * 0.66;
@@ -312,10 +304,9 @@ void loop()
     // lcd.setCursor(_mosfetTem+2,1);
     // lcd.print(temFET);
 
-    setNunchuckValue(throttle);
     previousMillisValues = millis();
   }
-
+    setNunchuckValue(throttle);
 
   /** BARRA DEL DUTY CICLE */
   // byte unitDC = dutyCycleNow / 10;
